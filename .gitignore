@@ -1,4 +1,5 @@
 *.py[co]
+settings_local.py
 
 # Packages
 *.egg

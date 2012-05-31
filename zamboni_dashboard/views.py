@@ -13,7 +13,6 @@ def index():
 
 @app.route('/ganglia')
 def ganglia():
-    GANGLIA_BASE = 'https://ganglia.mozilla.org/phx1'
 
     def ganglia_graphs(names, *args, **kwargs):
         return [ganglia_graph(n, *args, **kwargs) for n in names]
