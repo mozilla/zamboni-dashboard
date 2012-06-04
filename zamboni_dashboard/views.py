@@ -40,7 +40,7 @@ def ganglia():
     graphs = {}
     graphs['Web'] = ganglia_graphs(default_reports +
                                     ['apache_report', 'apache_server_report',
-                                     'nginx_server_report'],
+                                     'nginx_response_report','nginx_server_report'],
                                    cluster='addons')
     graphs['Memcache'] = ganglia_graphs(default_reports + ['memcached_report'],
                                         cluster='Memcache AMO Cluster')
