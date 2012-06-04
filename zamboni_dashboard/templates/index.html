@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <h1>Zamboni Dashboard</h1>
     <ul id="menu">
         <li><a href="{{ url_for('ganglia') }}">Ganglia</a></li>
         <li><a href="{{ config['GRAPHITE_URL'] }}">Graphite</a></li>
