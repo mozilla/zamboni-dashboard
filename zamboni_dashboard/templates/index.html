@@ -2,7 +2,16 @@
 {% block content %}
     <h1>Zamboni Dashboard</h1>
     <ul id="menu">
-        <li><a href="{{ url_for('ganglia') }}">Ganglia</a></li>
-        <li><a href="{{ config['GRAPHITE_URL'] }}">Graphite</a></li>
+        <li>External Resources
+            <ul>
+                <li><a href="https://bit.ly/amo_ops_bug">File an operations bug</a></li>
+                <li><a href="https://mana.mozilla.org/wiki/display/websites/addons.mozilla.org">Operations documentation</a></li>
+            </ul>
+        <li>Graphs
+            <ul>
+                <li><a href="{{ url_for('ganglia') }}">Ganglia</a></li>
+                <li><a href="{{ config['GRAPHITE_URL'] }}">Graphite</a></li>
+            </ul>
+        </li>
     </ul>
 {% endblock %}
