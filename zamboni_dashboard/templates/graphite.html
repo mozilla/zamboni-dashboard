@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container-fluid">
+  <h1><a href="{{ url_for('index') }}">AMO</a>: Graphite for {{ site }}</h1>
+  <p>
+    {% for site in sites %}
+    <a href="?site={{ site }}&amp;graph={{ defaults.graph }}">{{ site }}</a> {% if not loop.last %}|{% endif %}
+    {% endfor %}
+  </p>
+  <hr/>
+  <p>
+    {% for slug, name, graph in graphs %}
+      <a href="?site={{ defaults.site }}&amp;graph={{ slug }}">{{ name }}</a> {% if not loop.last %}|{% endif %}
+    {% endfor %}
+  </p>
+    <h2><a id="{{ graph.slug }}">{{ graph.name }}</a></h2>
+    <img class="fifteen" src="{{ base }}&amp;{{ graph.url[0] }}{{ graph.updates }}&amp;{{ fifteen }}">
+    <img class="hour" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ hour }}">
+    <img class="day" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ day }}">
+    <img class="week" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ week }}">
+    <img class="month" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ month }}">
+    <img class="3month" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ three_month }}">
+</div>
+{% endblock %}
