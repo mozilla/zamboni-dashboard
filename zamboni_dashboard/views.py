@@ -5,7 +5,7 @@ from flask import render_template, request
 from jinja2 import Template
 
 from . import app
-from . import graphite_data
+from .data.graphite import graphs as graphite_graphs
 
 
 @app.route('/')
@@ -41,8 +41,10 @@ def ganglia():
                        'mem_report', 'network_report']
     graphs = {}
     graphs['Web'] = ganglia_graphs(default_reports +
-                                    ['apache_report', 'apache_server_report',
-                                     'nginx_response_report','nginx_server_report'],
+                                    ['apache_report',
+                                     'apache_server_report',
+                                     'nginx_response_report',
+                                     'nginx_server_report'],
                                    cluster='addons')
     graphs['Memcache'] = ganglia_graphs(default_reports + ['memcached_report'],
                                         cluster='Memcache AMO Cluster')
@@ -102,7 +104,7 @@ def graphite():
         'ns': 'stats.%s' % sites[site]
     }
     graphs = {}
-    for name, gs in graphite_data.graphs:
+    for name, gs in graphite_graphs:
         slug = name.lower().replace(' ', '-')
         graphs[slug] = {
                 'name': name, 'slug': slug,
@@ -110,7 +112,7 @@ def graphite():
                 'updates': data['updates'],
         }
 
-    data['graphs'] = sorted([ (v['slug'], v['name'], v['url']) for v in graphs.values() ])
+    data['graphs'] = sorted([(v['slug'], v['name'], v['url']) for v in graphs.values()])
     data['graph'] = graphs[graph]
     data['defaults'] = {'site': site, 'graph': graph}
     return render_template('graphite.html', **data)
