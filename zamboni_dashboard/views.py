@@ -43,6 +43,7 @@ def ganglia():
     graphs['Web'] = ganglia_graphs(default_reports +
                                     ['apache_report',
                                      'apache_server_report',
+                                     'nginx_active_connections',
                                      'nginx_response_report',
                                      'nginx_server_report'],
                                    cluster='addons')
