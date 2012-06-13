@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for group, services in status.iteritems() %}
+        <h2>{{ group }}</h2>
+        <table>
+            <tr><td>Service</td><td>OK</td><td>WARNING</td><td>CRITICAL</td></tr>
+        {% for s, stat in services.iteritems() %}
+        <tr>
+            <td>{{ s }}</td>
+            <td>{{ stat['OK']|length }}</td>
+            <td>{{ stat['WARNING']|length }}</td>
+            <td>{{ stat['CRITICAL']|length }}</td>
+        {% endfor %}
+        </table>
+
+    {% endfor %}
+{% endblock %}

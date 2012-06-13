@@ -6,6 +6,7 @@ from jinja2 import Template
 
 from . import app
 from .data.graphite import graphs as graphite_graphs
+from .data.nagios import NagiosStatus
 
 
 @app.route('/')
@@ -117,3 +118,24 @@ def graphite():
     data['graph'] = graphs[graph]
     data['defaults'] = {'site': site, 'graph': graph}
     return render_template('graphite.html', **data)
+
+
+@app.route('/nagios')
+def nagios():
+    f = open(app.config['NAGIOS_STATUS_FILE'])
+    nstatus = NagiosStatus(f)
+    service_groups = [('Web Servers',
+                      ['web%d.addons.phx1.mozilla.com' % i
+                       for i in range(1, 31)],
+                      ['zamboni monitor:8080', 'marketplace monitor:8081'])]
+
+    status = {}
+    for group, hosts, services in service_groups:
+        status[group] = {}
+        for s in services:
+            status[group][s] = {'OK': [], 'WARNING': [], 'CRITICAL': []}
+            for h in hosts:
+                tmp = nstatus.services[h][s]
+                status[group][s][tmp.state] = tmp.status
+
+    return render_template('nagios.html', status=status)

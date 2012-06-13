@@ -2,6 +2,38 @@ from collections import defaultdict
 import re
 
 
+class NagiosServiceGroup(object):
+    def __init__(self):
+        self.services = {}
+
+    def append(self, s):
+        self.services[s.description] = s
+
+    def __getitem__(self, key):
+        return self.services.get(key)
+
+    def __len__(self):
+        return len(self.services)
+
+    def __iter__(self):
+        return (s for s in self.services.values())
+
+
+class NagiosService(object):
+
+    STATES = {'0': 'OK', '1': 'WARNING', '2': 'CRITICAL'}
+
+    def __init__(self, data):
+        self._data = data
+        self.host = data['host_name']
+        self.description = data['service_description']
+        self.status = data['plugin_output']
+
+    @property
+    def state(self):
+        return self.STATES.get(self._data['current_state'], 'UNKNOWN')
+
+
 class NagiosStatus(object):
 
     RE_BLOCKSTART = re.compile('(\w+)\s*{')
@@ -11,7 +43,7 @@ class NagiosStatus(object):
     def __init__(self, f):
         self.f = f
         self.hosts = defaultdict(list)
-        self.services = defaultdict(list)
+        self.services = defaultdict(NagiosServiceGroup)
         try:
             self._parse_blocks()
         except StopIteration:
@@ -24,7 +56,7 @@ class NagiosStatus(object):
             if m:
                 defs = self._parse_defs()
                 if m.group(1) == 'servicestatus':
-                    self.services[defs['host_name']].append(defs)
+                    self.services[defs['host_name']].append(NagiosService(defs))
                 elif m.group(1) == 'hoststatus':
                     self.hosts[defs['host_name']].append(defs)
 
