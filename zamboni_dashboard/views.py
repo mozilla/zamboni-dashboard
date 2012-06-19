@@ -136,6 +136,6 @@ def nagios():
             status[group][s] = {'OK': [], 'WARNING': [], 'CRITICAL': []}
             for h in hosts:
                 tmp = nstatus.services[h][s]
-                status[group][s][tmp.state] = tmp.status
+                status[group][s][tmp.state].append(tmp.status)
 
     return render_template('nagios.html', status=status)
