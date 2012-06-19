@@ -124,10 +124,23 @@ def graphite():
 def nagios():
     f = open(app.config['NAGIOS_STATUS_FILE'])
     nstatus = NagiosStatus(f)
-    service_groups = [('Web Servers',
-                      ['web%d.addons.phx1.mozilla.com' % i
-                       for i in range(1, 31)],
-                      ['zamboni monitor:8080', 'marketplace monitor:8081'])]
+    service_groups = [('Web',
+                       ['web%d.addons.phx1.mozilla.com' % i
+                        for i in range(1, 31)],
+                       ['zamboni monitor:8080', 'marketplace monitor:8081']),
+                      ('Virtual Server: addons.mozilla.org',
+                       ['addons.zlb.phx.mozilla.net'],
+                       ['http - addons.mozilla.org',
+                        'https - addons.mozilla.org',
+                        'addons.mozilla.org - string blocklist',
+                        'addons.mozilla.org - string Recommended',
+                        'addons.mozilla.org - string Themes1',
+                        'addons.mozilla.org - string Add-ons']),
+                      ('Virtual Server: marketplace.mozilla.org',
+                       ['marketplace.zlb.phx.mozilla.net'],
+                       ['http - marketplace.m.o',
+                        'https - marketplace.m.o']),
+                     ]
 
     status = {}
     for group, hosts, services in service_groups:
