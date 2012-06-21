@@ -1,15 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for group, services in status.iteritems() %}
+    {% for group, service_groups in status.iteritems() %}
         <h2>{{ group }}</h2>
         <table>
-            <tr><td>Service</td><td>OK</td><td>WARNING</td><td>CRITICAL</td></tr>
-        {% for s, stat in services.iteritems() %}
+            <tr><th>Service</th><th>OK</th><th>WARNING</th><th>CRITICAL</th></tr>
+        {% for service_group, services in service_groups.iteritems() %}
         <tr>
-            <td>{{ s }}</td>
-            <td>{{ stat['OK']|length }}</td>
-            <td>{{ stat['WARNING']|length }}</td>
-            <td>{{ stat['CRITICAL']|length }}</td>
+            <td>{{ service_group }}</td>
+            <td>{{ services.OK|length }}</td>
+            <td>{{ services.WARNING|length }}</td>
+            <td>{{ services.CRITICAL|length }}</td>
+            <td style="display: none;">
+                <ul class="service_host_list">
+                {% for service in services.all %}
+                <li class="service_{{ service.state|lower }}">{{ service.host }} - {{ service.status }}</li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
         {% endfor %}
         </table>
 
