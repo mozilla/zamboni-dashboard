@@ -134,6 +134,11 @@ def nagios():
                        ['color - Elasticsearch',
                         'procs - Elasticsearch',
                         'ES Load']),
+                      ('Redis',
+                       ['redis%d.addons.phx1.mozilla.com' % i
+                        for i in range(1, 3)],
+                       ['amo-redis - tcp:6379',
+                        'amo-redis - tcp:6381']),
                       ('Virtual Server: addons.mozilla.org',
                        ['addons.zlb.phx.mozilla.net'],
                        ['http - addons.mozilla.org',
