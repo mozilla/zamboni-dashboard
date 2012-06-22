@@ -128,6 +128,12 @@ def nagios():
                        ['web%d.addons.phx1.mozilla.com' % i
                         for i in range(1, 31)],
                        ['zamboni monitor:8080', 'marketplace monitor:8081']),
+                      ('Elasticsearch',
+                       ['elasticsearch%d.webapp.phx1.mozilla.com' % i
+                        for i in range(1, 4)],
+                       ['color - Elasticsearch',
+                        'procs - Elasticsearch',
+                        'ES Load']),
                       ('Virtual Server: addons.mozilla.org',
                        ['addons.zlb.phx.mozilla.net'],
                        ['http - addons.mozilla.org',
