@@ -3,13 +3,14 @@
     {% for group, service_groups in status.iteritems() %}
         <h2>{{ group }}</h2>
         <table>
-            <tr><th>Service</th><th>OK</th><th>WARNING</th><th>CRITICAL</th></tr>
+            <tr><th>Service</th><th>OK</th><th>WARNING</th><th>CRITICAL</th><th>UNKNOWN</th></tr>
         {% for service_group, services in service_groups.iteritems() %}
         <tr>
             <td>{{ service_group }}</td>
             <td>{{ services.OK|length }}</td>
             <td>{{ services.WARNING|length }}</td>
             <td>{{ services.CRITICAL|length }}</td>
+            <td>{{ services.UNKNOWN|length }}</td>
             <td style="display: none;">
                 <ul class="service_host_list">
                 {% for service in services.all %}

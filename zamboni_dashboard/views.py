@@ -153,7 +153,8 @@ def nagios():
         status[group] = {}
         for s in services:
             status[group][s] = {'all': [], 'OK': [],
-                                'WARNING': [], 'CRITICAL': []}
+                                'WARNING': [], 'CRITICAL': [],
+                                'UNKNOWN': []}
             for h in hosts:
                 tmp = nstatus.services[h][s]
                 status[group][s][tmp.state].append(tmp)
