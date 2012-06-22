@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 import re
 
 
@@ -44,6 +45,7 @@ class NagiosStatus(object):
         self.f = f
         self.hosts = defaultdict(list)
         self.services = defaultdict(NagiosServiceGroup)
+        self.updated = None
         try:
             self._parse_blocks()
         except StopIteration:
@@ -59,6 +61,9 @@ class NagiosStatus(object):
                     self.services[defs['host_name']].append(NagiosService(defs))
                 elif m.group(1) == 'hoststatus':
                     self.hosts[defs['host_name']].append(defs)
+                elif m.group(1) == 'info':
+                    self.updated = datetime.fromtimestamp(
+                                                    float(defs.get('created')))
 
     def _parse_defs(self):
         defs = {}

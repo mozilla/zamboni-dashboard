@@ -165,4 +165,4 @@ def nagios():
                 status[group][s][tmp.state].append(tmp)
                 status[group][s]['all'].append(tmp)
 
-    return render_template('nagios.html', status=status)
+    return render_template('nagios.html', status=status, updated=nstatus.updated)
