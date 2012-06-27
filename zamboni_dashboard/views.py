@@ -151,6 +151,17 @@ def nagios():
                        ['marketplace.zlb.phx.mozilla.net'],
                        ['http - marketplace.m.o',
                         'https - marketplace.m.o']),
+                      ('Virtual Server: versioncheck.addons.mozilla.org',
+                       ['addons-versioncheck-single1.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single2.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single3.zlb.phx.mozilla.net'],
+                       ['vamo-www',
+                        'vamo zamboni monitor']),
+                      ('Virtual Server: versioncheck-bg.addons.mozilla.org',
+                       ['addons-versioncheck-single1.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single2.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single3.zlb.phx.mozilla.net'],
+                       ['vamo-bg-www']),
                      ]
 
     status = {}
