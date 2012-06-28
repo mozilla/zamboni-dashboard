@@ -3,30 +3,39 @@
     <div class="row">
     {% for group, service_groups in status.iteritems() %}
         <div class="span8">
-        <h2>{{ group }}</h2>
-        <table class="table table-striped table-condensed">
-            <thead>
-                <tr><th>Service</th><th>OK</th><th>WARNING</th><th>CRITICAL</th><th>UNKNOWN</th></tr>
-            </thead>
-        <tbody>
-            {% for service_group, services in service_groups.iteritems() %}
-            <tr class="nagios_row">
-                <td>{{ service_group }}</td>
-                <td>{{ services.OK|length }}</td>
-                <td>{{ services.WARNING|length }}</td>
-                <td>{{ services.CRITICAL|length }}</td>
-                <td>{{ services.UNKNOWN|length }}</td>
-                <td>
-                    <dl class="collapse in service_host_list dl-horizontal">
-                    {% for service in services.all -%}
-                    <dt>{{ service.host }}</dt><dd><span class="label {{ service.label_class }}">{{ service.status }}</span></dd>
-                    {% endfor %}
-                    </dl>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        </table>
+            <h2>{{ group }}</h2>
+            <div class="accordion">
+                {% for service_group, services in service_groups.iteritems() %}
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle">
+                                <strong>{{ service_group }}</strong>
+                                {% if services.CRITICAL %}
+                                <span class="label label-important">{{ services.CRITICAL|length }} services are CRITICAL!</span>
+                                {% endif %}
+                                {% if services.WARNING %}
+                                <span class="label label-warning">{{ services.WARNING|length}} services are WARNING!</span>
+                                {% endif %}
+                                {% if services.UNKNOWN %}
+                                <span class="label label-info">{{ services.UNKNOWN|length}} services are UNKNOWN!</span>
+                                {% endif %}
+                                {% if services.OK %}
+                                <span class="label label-success">{{ services.OK|length }} services are OKAY.</span>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="accordion-body in collapse" style="height: 0px;">
+                            <div class="accordion-inner">
+                                <dl class="dl-horizontal">
+                                {% for service in services.all -%}
+                                <dt>{{ service.host }}</dt><dd><span class="label {{ service.label_class }}">{{ service.status }}</span></dd>
+                                {% endfor %}
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     {% endfor %}
     </div>
@@ -34,9 +43,9 @@
     Last updated: {{ updated }}
     </div>
     <script>
-        $('.collapse').collapse();
-        $('.nagios_row').on('click', function(e) {
-            $(this).find('.collapse').collapse('toggle');
+        $('.collapse').collapse({parent: ':parent'});
+        $('.accordion-toggle').on('click', function(e) {
+            $(this).parent().siblings('.collapse').collapse('toggle');
             return false;
         });
     </script>

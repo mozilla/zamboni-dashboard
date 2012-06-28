@@ -1,14 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Zamboni Dashboard{% endblock %}</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
         <script src="{{ url_for('static', filename='js/jquery-1.7.2.min.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+        <style>
+            body {
+                padding-top: 60px;
+            }
+        </style>
     </head>
     <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">Zamboni Dashboard</a>
+                    <ul class="nav">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('ganglia') }}">Ganglia</a></li>
+                        <li><a href="{{ url_for('graphite') }}">Graphite</a></li>
+                        <li><a href="{{ url_for('nagios') }}">Nagios</a></li>
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">External<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="https://bit.ly/amo_ops_bug">File an operations bug</a></li>
+                            <li><a href="https://mana.mozilla.org/wiki/display/websites/addons.mozilla.org">Operations documentation</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="container">
             {% block content %}
             {% endblock %}
