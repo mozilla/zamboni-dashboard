@@ -34,6 +34,14 @@ class NagiosService(object):
     def state(self):
         return self.STATES.get(self._data['current_state'], 'UNKNOWN')
 
+    @property
+    def label_class(self):
+        label_map = {'OK': 'label-success',
+                     'WARNING': 'label-warning',
+                     'CRITICAL': 'label-important',
+                     'UNKNOWN': 'label-info'}
+        return label_map.get(self.state, 'label')
+
 
 class NagiosStatus(object):
 
