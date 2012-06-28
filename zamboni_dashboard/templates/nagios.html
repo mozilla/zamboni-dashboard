@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="row">
-    {% for group, service_groups in status.iteritems() %}
+    {% for group, service_groups in status %}
         <div class="span8">
             <h2>{{ group }}</h2>
             <div class="accordion">

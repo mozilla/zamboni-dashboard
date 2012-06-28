@@ -164,16 +164,17 @@ def nagios():
                        ['vamo-bg-www']),
                      ]
 
-    status = {}
+    status = []
     for group, hosts, services in service_groups:
-        status[group] = {}
+        group_status = {}
         for s in services:
-            status[group][s] = {'all': [], 'OK': [],
+            group_status[s] = {'all': [], 'OK': [],
                                 'WARNING': [], 'CRITICAL': [],
                                 'UNKNOWN': []}
             for h in hosts:
                 tmp = nstatus.services[h][s]
-                status[group][s][tmp.state].append(tmp)
-                status[group][s]['all'].append(tmp)
+                group_status[s][tmp.state].append(tmp)
+                group_status[s]['all'].append(tmp)
+        status.append((group, group_status))
 
     return render_template('nagios.html', status=status, updated=nstatus.updated)
