@@ -1,7 +1,7 @@
 from functools import partial
 from urllib import urlencode
 
-from flask import render_template, request
+from flask import render_template, redirect, request
 from jinja2 import Template
 
 from . import app
@@ -11,7 +11,7 @@ from .data.nagios import NagiosStatus
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect('nagios')
 
 
 @app.route('/ganglia')
