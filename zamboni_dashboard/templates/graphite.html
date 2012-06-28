@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="container-fluid">
   <h1><a href="{{ url_for('index') }}">AMO</a>: Graphite for {{ site }}</h1>
   <p>
     {% for site in sites %}
@@ -20,5 +19,4 @@
     <img class="week" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ week }}">
     <img class="month" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ month }}">
     <img class="3month" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ three_month }}">
-</div>
 {% endblock %}

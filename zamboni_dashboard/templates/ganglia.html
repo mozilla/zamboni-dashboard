@@ -1,21 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>AMO Graphs</h1>
-<form method="get">
-    Period: <select name="range">
+<form class="form-inline" method="get">
+    <label>Period:</label> <select name="range">
         {% for r in ranges %}
         <option {% if r == cur_range %} selected="selected"{% endif %}
             value="{{ r }}" >{{ r }}</option>
         {% endfor %}
     </select>
-    Size: <select name="size">
+    <label>Size:</label> <select name="size">
         {% for s in sizes %}
         <option {% if s == cur_size %} selected="selected"{% endif %}
             value="{{ s }}" >{{ s }}</option>
         {% endfor %}
     </select>
     <input type="submit" value="Switch">
-
 </form>
     {% for n, gs in graphs.iteritems() %}
         <h2>{{ n }}</h2>

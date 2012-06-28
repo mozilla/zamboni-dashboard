@@ -35,7 +35,7 @@ def ganglia():
     ranges = ['hour', 'day', 'week', 'month', 'year']
     sizes = ['small', 'medium', 'large', 'xlarge']
     cur_range = request.args.get('range', 'hour')
-    cur_size = request.args.get('size', 'medium')
+    cur_size = request.args.get('size', 'small')
     ganglia_graphs = partial(ganglia_graphs, r=cur_range, size=cur_size)
 
     default_reports = ['load_report', 'cpu_report',
@@ -90,7 +90,7 @@ def graphite():
     }
 
     data = {
-        'base': '%s/render/?width=586&height=308' % app.config['GRAPHITE_BASE'],
+        'base': '%s/render/?width=580&height=308' % app.config['GRAPHITE_BASE'],
         'site_url': site_urls[site],
         'site_urls': site_urls,
         'site_name': site_names[site],
