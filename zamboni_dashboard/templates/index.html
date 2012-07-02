@@ -1,0 +1,23 @@
+{% macro status_block(status_type, heading, msg) %}
+    <div class="alert {% if status_type %}alert-{{ status_type }}{% endif %}">
+        <h1>{{ heading }}</h1><p>{{ msg }}</p>
+    </div>
+    <a class="btn btn-{{ status_type }} btn-large" href="{{ url_for('nagios') }}">Details</a>
+{% endmacro %}
+{% extends "base.html" %}
+{% block content %}
+    <div class="hero-unit">
+        {% if services.CRITICAL %}
+            {{ status_block('danger', 'Alert!', 'Some services are broken.') }}
+        {% elif services.WARNING %}
+            {{ status_block('warning', 'Warning!', 'The site is degraded.') }}
+        {% elif services.UNKNOWN %}
+            {{ status_block('warning', ':-(', 'Nagios is returning unknown results.') }}
+        {% else  %}
+            {{ status_block('success', 'Woot!', 'All is well.') }}
+        {% endif %}
+    </div>
+    <div>
+    Last updated: {{ updated }}
+    </div>
+{% endblock %}

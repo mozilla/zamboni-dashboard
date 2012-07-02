@@ -3,3 +3,42 @@ class DefaultSettings(object):
     GRAPHITE_BASE = 'https://graphite-phx.mozilla.org'
     NAGIOS_STATUS_FILE = ''
     NAGIOS_STATUS_URL = ''
+    NAGIOS_SERVICE_GROUPS = [('Web',
+                       ['web%d.addons.phx1.mozilla.com' % i
+                        for i in range(1, 31)],
+                       ['zamboni monitor:8080', 'marketplace monitor:8081']),
+                      ('Elasticsearch',
+                       ['elasticsearch%d.webapp.phx1.mozilla.com' % i
+                        for i in range(1, 4)],
+                       ['color - Elasticsearch',
+                        'procs - Elasticsearch',
+                        'ES Load']),
+                      ('Redis',
+                       ['redis%d.addons.phx1.mozilla.com' % i
+                        for i in range(1, 3)],
+                       ['amo-redis - tcp:6379',
+                        'amo-redis - tcp:6381']),
+                      ('Virtual Server: addons.mozilla.org',
+                       ['addons.zlb.phx.mozilla.net'],
+                       ['http - addons.mozilla.org',
+                        'https - addons.mozilla.org',
+                        'addons.mozilla.org - string blocklist',
+                        'addons.mozilla.org - string Recommended',
+                        'addons.mozilla.org - string Themes1',
+                        'addons.mozilla.org - string Add-ons']),
+                      ('Virtual Server: marketplace.mozilla.org',
+                       ['marketplace.zlb.phx.mozilla.net'],
+                       ['http - marketplace.m.o',
+                        'https - marketplace.m.o']),
+                      ('Virtual Server: versioncheck.addons.mozilla.org',
+                       ['addons-versioncheck-single1.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single2.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single3.zlb.phx.mozilla.net'],
+                       ['vamo-www',
+                        'vamo zamboni monitor']),
+                      ('Virtual Server: versioncheck-bg.addons.mozilla.org',
+                       ['addons-versioncheck-single1.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single2.zlb.phx.mozilla.net',
+                        'addons-versioncheck-single3.zlb.phx.mozilla.net'],
+                       ['vamo-bg-www']),
+                     ]

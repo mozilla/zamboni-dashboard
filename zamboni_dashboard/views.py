@@ -6,12 +6,22 @@ from jinja2 import Template
 
 from . import app
 from .data.graphite import graphs as graphite_graphs
-from .data.nagios import NagiosStatus
+from .data.nagios import get_nagios_service_status
+
 
 
 @app.route('/')
 def index():
-    return redirect('nagios')
+    status, updated = get_nagios_service_status()
+    all_services = {'all': [], 'OK': [],
+                    'WARNING': [], 'CRITICAL': [], 'UNKNOWN': []}
+
+    for group, group_status in status:
+        for service_type, levels in group_status.iteritems():
+            for level, services in levels.iteritems():
+                all_services[level].extend(services)
+
+    return render_template('index.html', services=all_services, updated=updated)
 
 
 @app.route('/ganglia')
@@ -122,59 +132,6 @@ def graphite():
 
 @app.route('/nagios')
 def nagios():
-    f = open(app.config['NAGIOS_STATUS_FILE'])
-    nstatus = NagiosStatus(f)
-    service_groups = [('Web',
-                       ['web%d.addons.phx1.mozilla.com' % i
-                        for i in range(1, 31)],
-                       ['zamboni monitor:8080', 'marketplace monitor:8081']),
-                      ('Elasticsearch',
-                       ['elasticsearch%d.webapp.phx1.mozilla.com' % i
-                        for i in range(1, 4)],
-                       ['color - Elasticsearch',
-                        'procs - Elasticsearch',
-                        'ES Load']),
-                      ('Redis',
-                       ['redis%d.addons.phx1.mozilla.com' % i
-                        for i in range(1, 3)],
-                       ['amo-redis - tcp:6379',
-                        'amo-redis - tcp:6381']),
-                      ('Virtual Server: addons.mozilla.org',
-                       ['addons.zlb.phx.mozilla.net'],
-                       ['http - addons.mozilla.org',
-                        'https - addons.mozilla.org',
-                        'addons.mozilla.org - string blocklist',
-                        'addons.mozilla.org - string Recommended',
-                        'addons.mozilla.org - string Themes1',
-                        'addons.mozilla.org - string Add-ons']),
-                      ('Virtual Server: marketplace.mozilla.org',
-                       ['marketplace.zlb.phx.mozilla.net'],
-                       ['http - marketplace.m.o',
-                        'https - marketplace.m.o']),
-                      ('Virtual Server: versioncheck.addons.mozilla.org',
-                       ['addons-versioncheck-single1.zlb.phx.mozilla.net',
-                        'addons-versioncheck-single2.zlb.phx.mozilla.net',
-                        'addons-versioncheck-single3.zlb.phx.mozilla.net'],
-                       ['vamo-www',
-                        'vamo zamboni monitor']),
-                      ('Virtual Server: versioncheck-bg.addons.mozilla.org',
-                       ['addons-versioncheck-single1.zlb.phx.mozilla.net',
-                        'addons-versioncheck-single2.zlb.phx.mozilla.net',
-                        'addons-versioncheck-single3.zlb.phx.mozilla.net'],
-                       ['vamo-bg-www']),
-                     ]
+    status, updated = get_nagios_service_status()
 
-    status = []
-    for group, hosts, services in service_groups:
-        group_status = {}
-        for s in services:
-            group_status[s] = {'all': [], 'OK': [],
-                                'WARNING': [], 'CRITICAL': [],
-                                'UNKNOWN': []}
-            for h in hosts:
-                tmp = nstatus.services[h][s]
-                group_status[s][tmp.state].append(tmp)
-                group_status[s]['all'].append(tmp)
-        status.append((group, group_status))
-
-    return render_template('nagios.html', status=status, updated=nstatus.updated)
+    return render_template('nagios.html', status=status, updated=updated)
