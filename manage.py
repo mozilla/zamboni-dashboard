@@ -16,9 +16,13 @@ def fetch_nagios_state():
     while True:
 
         try:
-            r = requests.get(app.config['NAGIOS_STATUS_URL'])
+            r = requests.get(app.config['NAGIOS_STATUS_URL'], timeout=10)
         except requests.exceptions.ConnectionError, e:
             print "Error:", e
+            time.sleep(30)
+            continue
+        except requests.exceptions.Timeout, e:
+            print "Timeout:", e
             time.sleep(30)
             continue
 
