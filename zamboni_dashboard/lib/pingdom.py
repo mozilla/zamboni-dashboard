@@ -35,8 +35,9 @@ class Pingdom(object):
                            refresh=refresh)['summary']
     
     def _obj_cache_key(self, func, *args):
-        return 'pingdom:%s:%s:%s:%s:%s' % (self.user, self.password, self.key,
-                                           func, md5(str(args)).hexdigest())
+        key = 'pingdom:%s:%s:%s:%s:%s' % (self.user, self.password, self.key,
+                                               func, md5(str(args)).hexdigest())
+        return md5(key).hexdigest()
 
     def _fetch(self, resource, params=None, refresh=False):
         key = self._obj_cache_key('_fetch', resource, params)
