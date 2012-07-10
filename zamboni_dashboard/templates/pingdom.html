@@ -1,6 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for check in checks %}
-        {{ check.hostname }} 
-    {% endfor %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Check</th>
+                <th>Status</th>
+                <th>Uptime %</th>
+                <th>Response time Avg.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for check in checks %}
+            <tr>
+                <td>{{ check.name }}</td>
+                <td>{{ check.status }}</td>
+                <td>{{ (check.uptime * 100)|round(2, 'common') }}%</td>
+                <td>{{ check.avg_response }} ms</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

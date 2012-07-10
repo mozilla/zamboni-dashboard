@@ -140,5 +140,5 @@ def nagios():
 
 @app.route('/pingdom')
 def pingdom():
-    checks = pingdom_data.checks()
+    checks = pingdom_data.checks(with_summary=True)
     return render_template('pingdom.html', checks=checks)

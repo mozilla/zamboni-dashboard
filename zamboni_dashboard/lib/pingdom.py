@@ -12,14 +12,24 @@ class Pingdom(object):
         self.password = password
         self.key = key
 
-    def checks(self):
+    def checks(self, with_summary=False):
         """Returns a list of checks"""
-        return self._fetch('checks')['checks']
+        checks = self._fetch('checks')['checks']
+
+        if with_summary:
+            for c in checks:
+                s = self.summary(c['id'])
+                c['avg_response'] = s['responsetime']['avgresponse']
+                
+                status = s['status']
+                c['uptime'] = float(status['totalup']) / (status['totalup'] + status['totaldown'])
+
+        return checks
     
     def summary(self, check_id):
         """Returns summary of response time and uptime for check"""
         return self._fetch('summary.average/%s' % check_id,
-                           {'includeuptime': 'true'})
+                           {'includeuptime': 'true'})['summary']
 
     def _fetch(self, resource, params=None):
         headers = {'App-Key': self.key}
