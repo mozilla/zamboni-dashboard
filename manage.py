@@ -6,6 +6,7 @@ from flaskext.script import Manager
 import requests
 
 from zamboni_dashboard import app
+from zamboni_dashboard.data.pingdom import pingdom
 
 
 manager = Manager(app)
@@ -34,6 +35,10 @@ def fetch_nagios_state():
 
         time.sleep(15)
 
+
+@manager.command
+def precache_pingdom():
+    pingdom.checks(with_summary=True, refresh=True)
 
 if __name__ == "__main__":
     manager.run()

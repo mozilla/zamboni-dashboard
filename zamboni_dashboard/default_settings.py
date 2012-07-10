@@ -45,3 +45,6 @@ class DefaultSettings(object):
     PINGDOM_USER = ''
     PINGDOM_PASS = ''
     PINGDOM_KEY = ''
+
+    CACHE_TYPE = 'simple'
+    CACHE_DEFAULT_TIMEOUT = 180
