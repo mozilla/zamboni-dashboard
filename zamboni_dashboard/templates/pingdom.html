@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for check in checks %}
+        {{ check.hostname }} 
+    {% endfor %}
+{% endblock %}

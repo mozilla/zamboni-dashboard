@@ -1,4 +1,4 @@
-Flask==0.8
+Flask==0.9
 Flask-Script
 requests
 

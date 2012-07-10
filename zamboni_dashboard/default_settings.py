@@ -42,3 +42,6 @@ class DefaultSettings(object):
                         'addons-versioncheck-single3.zlb.phx.mozilla.net'],
                        ['vamo-bg-www']),
                      ]
+    PINGDOM_USER = ''
+    PINGDOM_PASS = ''
+    PINGDOM_KEY = ''

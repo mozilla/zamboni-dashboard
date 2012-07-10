@@ -1,5 +1,4 @@
 from .. import app
-
 from ..lib.nagios import NagiosStatus
 
 

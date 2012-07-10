@@ -7,6 +7,7 @@ from jinja2 import Template
 from . import app
 from .data.graphite import graphs as graphite_graphs
 from .data.nagios import get_nagios_service_status
+from .data.pingdom import pingdom as pingdom_data
 
 
 
@@ -135,3 +136,9 @@ def nagios():
     status, updated = get_nagios_service_status()
 
     return render_template('nagios.html', status=status, updated=updated)
+
+
+@app.route('/pingdom')
+def pingdom():
+    checks = pingdom_data.checks()
+    return render_template('pingdom.html', checks=checks)
