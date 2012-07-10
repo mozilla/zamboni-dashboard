@@ -141,4 +141,5 @@ def nagios():
 @app.route('/pingdom')
 def pingdom():
     checks = pingdom_data.checks(with_summary=True)
+    checks.sort(key=lambda x: x['name'])
     return render_template('pingdom.html', checks=checks)
