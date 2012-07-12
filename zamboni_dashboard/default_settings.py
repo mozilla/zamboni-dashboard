@@ -11,8 +11,7 @@ class DefaultSettings(object):
                        ['elasticsearch%d.webapp.phx1.mozilla.com' % i
                         for i in range(1, 4)],
                        ['color - Elasticsearch',
-                        'procs - Elasticsearch',
-                        'ES Load']),
+                        'procs - Elasticsearch']),
                       ('Redis',
                        ['redis%d.addons.phx1.mozilla.com' % i
                         for i in range(1, 3)],
