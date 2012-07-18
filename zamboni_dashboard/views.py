@@ -8,6 +8,7 @@ from . import app
 from .data.graphite import graphs as graphite_graphs
 from .data.nagios import get_nagios_service_status
 from .data.pingdom import pingdom as pingdom_data
+from .data.ganglia import ganglia_graphs
 
 
 
@@ -28,40 +29,25 @@ def index():
 @app.route('/ganglia')
 def ganglia():
 
-    def ganglia_graphs(names, *args, **kwargs):
-        return [ganglia_graph(n, *args, **kwargs) for n in names]
-
-    def ganglia_graph(name, cluster, size='medium',
-                            r='hour', t='g', host=None):
-        query = {'c': cluster,
-                 'z': size,
-                 'r': r,
-                 t: name}
-        if host:
-            query['host'] = host
-
-        return "%s/graph.php?%s" % (app.config['GANGLIA_BASE'],
-                                    urlencode(query))
-
     ranges = ['hour', 'day', 'week', 'month', 'year']
     sizes = ['small', 'medium', 'large', 'xlarge']
     cur_range = request.args.get('range', 'hour')
     cur_size = request.args.get('size', 'small')
-    ganglia_graphs = partial(ganglia_graphs, r=cur_range, size=cur_size)
+    # putting ganglia_graphs in a lib causes a problem here when trying to reuse the name,
+    # so we call it ganglia_graphs_sized locally
+    ganglia_graphs_sized = partial(ganglia_graphs, r=cur_range, size=cur_size)
 
-    default_reports = ['load_report', 'cpu_report',
-                       'mem_report', 'network_report']
     graphs = {}
-    graphs['Web'] = ganglia_graphs(default_reports +
+    graphs['Web'] = ganglia_graphs_sized(app.config['GANGLIA_DEFAULT_REPORTS'] +
                                     ['apache_report',
                                      'apache_server_report',
                                      'nginx_active_connections',
                                      'nginx_response_report',
                                      'nginx_server_report'],
                                    cluster='addons')
-    graphs['Memcache'] = ganglia_graphs(default_reports + ['memcached_report'],
+    graphs['Memcache'] = ganglia_graphs_sized(app.config['GANGLIA_DEFAULT_REPORTS'] + ['memcached_report'],
                                         cluster='Memcache AMO Cluster')
-    graphs['Redis'] = ganglia_graphs(default_reports +
+    graphs['Redis'] = ganglia_graphs_sized(app.config['GANGLIA_DEFAULT_REPORTS'] +
                                       ['amo_redis_prod_report'],
                                      cluster='amo-redis')
 

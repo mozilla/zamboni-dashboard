@@ -3,6 +3,8 @@ class DefaultSettings(object):
     OPS_BUG_URL = 'https://bit.ly/amo_ops_bug'
     OPS_DOCS_URL = 'https://mana.mozilla.org/wiki/display/websites/addons.mozilla.org'
     GANGLIA_BASE = 'https://ganglia.mozilla.org/phx1'
+    GANGLIA_DEFAULT_REPORTS = ['load_report', 'cpu_report',
+                       'mem_report', 'network_report']
     GRAPHITE_BASE = 'https://graphite-phx.mozilla.org'
     NAGIOS_STATUS_FILE = ''
     NAGIOS_STATUS_URL = ''
