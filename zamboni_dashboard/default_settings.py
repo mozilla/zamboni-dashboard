@@ -1,4 +1,7 @@
 class DefaultSettings(object):
+    DASHBOARD_NAME = 'Zamboni Dashboard'
+    OPS_BUG_URL = 'https://bit.ly/amo_ops_bug'
+    OPS_DOCS_URL = 'https://mana.mozilla.org/wiki/display/websites/addons.mozilla.org'
     GANGLIA_BASE = 'https://ganglia.mozilla.org/phx1'
     GRAPHITE_BASE = 'https://graphite-phx.mozilla.org'
     NAGIOS_STATUS_FILE = ''
