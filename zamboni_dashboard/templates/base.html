@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{{config.DASHBOARD_NAME}}{% endblock %}</title>
+        <title>{% block title %}{{ config.DASHBOARD_NAME }}{% endblock %}</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
         <script src="{{ url_for('static', filename='js/jquery-1.7.2.min.js') }}"></script>
@@ -21,10 +21,18 @@
                     <a class="brand" href="#">{{ config.DASHBOARD_NAME }}</a>
                     <ul class="nav">
                         <li><a href="{{ url_for('index') }}">Home</a></li>
+                        {% if 'ganglia' in config.ENABLED_MODULES %}
                         <li><a href="{{ url_for('ganglia') }}">Ganglia</a></li>
+                        {% endif %}
+                        {% if 'graphite' in config.ENABLED_MODULES %}
                         <li><a href="{{ url_for('graphite') }}">Graphite</a></li>
+                        {% endif %}
+                        {% if 'nagios' in config.ENABLED_MODULES %}
                         <li><a href="{{ url_for('nagios') }}">Nagios</a></li>
+                        {% endif %}
+                        {% if 'pingdom' in config.ENABLED_MODULES %}
                         <li><a href="{{ url_for('pingdom') }}">Pingdom</a></li>
+                        {% endif %}
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">External<b class="caret"></b></a>
                         <ul class="dropdown-menu">

@@ -8,6 +8,7 @@ from . import app
 from .data.graphite import graphs as graphite_graphs
 from .data.nagios import get_nagios_service_status
 from .data.pingdom import pingdom as pingdom_data
+from .data.ganglia import ganglia_graphs
 
 
 
@@ -28,42 +29,12 @@ def index():
 @app.route('/ganglia')
 def ganglia():
 
-    def ganglia_graphs(names, *args, **kwargs):
-        return [ganglia_graph(n, *args, **kwargs) for n in names]
-
-    def ganglia_graph(name, cluster, size='medium',
-                            r='hour', t='g', host=None):
-        query = {'c': cluster,
-                 'z': size,
-                 'r': r,
-                 t: name}
-        if host:
-            query['host'] = host
-
-        return "%s/graph.php?%s" % (app.config['GANGLIA_BASE'],
-                                    urlencode(query))
-
     ranges = ['hour', 'day', 'week', 'month', 'year']
     sizes = ['small', 'medium', 'large', 'xlarge']
     cur_range = request.args.get('range', 'hour')
     cur_size = request.args.get('size', 'small')
-    ganglia_graphs = partial(ganglia_graphs, r=cur_range, size=cur_size)
 
-    default_reports = ['load_report', 'cpu_report',
-                       'mem_report', 'network_report']
-    graphs = {}
-    graphs['Web'] = ganglia_graphs(default_reports +
-                                    ['apache_report',
-                                     'apache_server_report',
-                                     'nginx_active_connections',
-                                     'nginx_response_report',
-                                     'nginx_server_report'],
-                                   cluster='addons')
-    graphs['Memcache'] = ganglia_graphs(default_reports + ['memcached_report'],
-                                        cluster='Memcache AMO Cluster')
-    graphs['Redis'] = ganglia_graphs(default_reports +
-                                      ['amo_redis_prod_report'],
-                                     cluster='amo-redis')
+    graphs = ganglia_graphs(cur_size, cur_range)
 
     return render_template('ganglia.html', graphs=graphs,
                             sizes=sizes, ranges=ranges, cur_size=cur_size,
