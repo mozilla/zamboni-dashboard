@@ -5,6 +5,14 @@ class DefaultSettings(object):
     GANGLIA_BASE = 'https://ganglia.mozilla.org/phx1'
     GANGLIA_DEFAULT_REPORTS = ['load_report', 'cpu_report',
                        'mem_report', 'network_report']
+    GANGLIA_GROUPS = [('Web', 'addons', ['apache_report',
+                                     'apache_server_report',
+                                     'nginx_active_connections',
+                                     'nginx_response_report',
+                                     'nginx_server_report']),
+                    ('Memcache', 'Memcache AMO Cluster', ['memcached_report']),
+                    ('Redis', 'amo-redis', ['amo_redis_prod_report'])
+                    ]
     GRAPHITE_BASE = 'https://graphite-phx.mozilla.org'
     NAGIOS_STATUS_FILE = ''
     NAGIOS_STATUS_URL = ''

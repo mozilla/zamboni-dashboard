@@ -33,23 +33,8 @@ def ganglia():
     sizes = ['small', 'medium', 'large', 'xlarge']
     cur_range = request.args.get('range', 'hour')
     cur_size = request.args.get('size', 'small')
-    # putting ganglia_graphs in a lib causes a problem here when trying to reuse the name,
-    # so we call it ganglia_graphs_sized locally
-    ganglia_graphs_sized = partial(ganglia_graphs, r=cur_range, size=cur_size)
 
-    graphs = {}
-    graphs['Web'] = ganglia_graphs_sized(app.config['GANGLIA_DEFAULT_REPORTS'] +
-                                    ['apache_report',
-                                     'apache_server_report',
-                                     'nginx_active_connections',
-                                     'nginx_response_report',
-                                     'nginx_server_report'],
-                                   cluster='addons')
-    graphs['Memcache'] = ganglia_graphs_sized(app.config['GANGLIA_DEFAULT_REPORTS'] + ['memcached_report'],
-                                        cluster='Memcache AMO Cluster')
-    graphs['Redis'] = ganglia_graphs_sized(app.config['GANGLIA_DEFAULT_REPORTS'] +
-                                      ['amo_redis_prod_report'],
-                                     cluster='amo-redis')
+    graphs = ganglia_graphs(cur_size, cur_range)
 
     return render_template('ganglia.html', graphs=graphs,
                             sizes=sizes, ranges=ranges, cur_size=cur_size,

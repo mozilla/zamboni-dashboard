@@ -1,8 +1,12 @@
 from .. import app
 from urllib import urlencode
 
-def ganglia_graphs(names, *args, **kwargs):
-    return [ganglia_graph(n, *args, **kwargs) for n in names]
+def ganglia_graphs(size='small', r='hour'):
+    graphs = {}
+    for group, cluster, monitors in app.config['GANGLIA_GROUPS']:
+        monitors = monitors + app.config['GANGLIA_DEFAULT_REPORTS']
+        graphs[group] = [ganglia_graph(m, cluster, size, r) for m in monitors]
+    return graphs
 
 def ganglia_graph(name, cluster, size='medium',
                         r='hour', t='g', host=None):
