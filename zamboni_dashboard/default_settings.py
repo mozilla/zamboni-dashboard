@@ -26,6 +26,10 @@ class DefaultSettings(object):
                         for i in range(1, 4)],
                        ['color - Elasticsearch',
                         'procs - Elasticsearch']),
+                      ('Signer',
+                       ['signer%d.addons.phx1.mozilla.com' % i
+                        for i in range(1, 3)],
+                        ['http - Return code 405']),
                       ('Redis',
                        ['redis%d.addons.phx1.mozilla.com' % i
                         for i in range(1, 3)],
