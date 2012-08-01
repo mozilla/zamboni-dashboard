@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1><a href="{{ url_for('index') }}">AMO</a>: Graphite for {{ site }}</h1>
+  <h1>Graphite for {{ site }}</h1>
   <p>
     {% for site in sites %}
     <a href="?site={{ site }}&amp;graph={{ defaults.graph }}">{{ site }}</a> {% if not loop.last %}|{% endif %}

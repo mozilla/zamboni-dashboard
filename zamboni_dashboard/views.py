@@ -43,49 +43,24 @@ def ganglia():
 
 @app.route('/graphite')
 def graphite():
-    site = request.args.get('site', 'addons')
+    site = request.args.get('site', app.config['GRAPHITE_DEFAULT_SITE'])
     graph = request.args.get('graph', 'all-responses')
-
-    site_names = {
-        'addons': 'Addons',
-        'dev': 'Addons Dev',
-        'stage': 'Addons Stage',
-        'marketplace': 'Marketplace',
-        'marketplace-dev': 'Marketplace Dev',
-        'marketplace-stage': 'Marketplace Stage',
-    }
-    site_urls = {
-        'addons': 'https://addons.mozilla.org',
-        'dev': 'https://addons-dev.allizom.org',
-        'stage': 'https://addons.allizom.org',
-        'marketplace': 'https://marketplace.mozilla.org',
-        'marketplace-dev': 'https://marketplace-dev.allizom.org',
-        'marketplace-stage': 'https://marketplace.allizom.org',
-    }
-    sites = {
-        'addons': 'addons',
-        'dev': 'addons-dev',
-        'stage': 'addons-stage',
-        'marketplace': 'addons-marketplace',
-        'marketplace-dev': 'addons-marketplacedev',
-        'marketplace-stage': 'addons-marketplacestage',
-    }
 
     data = {
         'base': '%s/render/?width=580&height=308' % app.config['GRAPHITE_BASE'],
-        'site_url': site_urls[site],
-        'site_urls': site_urls,
-        'site_name': site_names[site],
-        'site': sites[site],
-        'updates': '&target=drawAsInfinite(stats.timers.%s.update.count)' % sites[site],
-        'sites': sites,
+        'site_url': app.config['GRAPHITE_SITE_URLS'][site],
+        'site_urls': app.config['GRAPHITE_SITE_URLS'],
+        'site_name': app.config['GRAPHITE_SITE_NAMES'][site],
+        'site': app.config['GRAPHITE_SITES'][site],
+        'updates': '&target=drawAsInfinite(stats.timers.%s.update.count)' % app.config['GRAPHITE_SITES'][site],
+        'sites': app.config['GRAPHITE_SITES'],
         'fifteen': 'from=-15minutes&title=15 minutes',
         'hour': 'from=-1hours&title=1 hour',
         'day': 'from=-24hours&title=24 hours',
         'week': 'from=-7days&title=7 days',
         'month': 'from=-30days&title=30 days',
         'three_month': 'from=-90days&title=90 days',
-        'ns': 'stats.%s' % sites[site]
+        'ns': 'stats.%s' % app.config['GRAPHITE_SITES'][site]
     }
     graphs = {}
     for name, gs in graphite_graphs:

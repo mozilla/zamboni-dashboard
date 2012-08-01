@@ -16,6 +16,31 @@ class DefaultSettings(object):
                     ('Redis', 'amo-redis', ['amo_redis_prod_report'])
                     ]
     GRAPHITE_BASE = 'https://graphite-phx.mozilla.org'
+    GRAPHITE_SITE_URLS = {
+						'addons': 'https://addons.mozilla.org',
+						'dev': 'https://addons-dev.allizom.org',
+						'stage': 'https://addons.allizom.org',
+						'marketplace': 'https://marketplace.mozilla.org',
+						'marketplace-dev': 'https://marketplace-dev.allizom.org',
+						'marketplace-stage': 'https://marketplace.allizom.org',
+						}
+    GRAPHITE_SITES = {
+					'addons': 'addons',
+					'dev': 'addons-dev',
+					'stage': 'addons-stage',
+					'marketplace': 'addons-marketplace',
+					'marketplace-dev': 'addons-marketplacedev',
+					'marketplace-stage': 'addons-marketplacestage',
+					}
+    GRAPHITE_DEFAULT_SITE = 'addons'
+    GRAPHITE_SITE_NAMES = {
+					'addons': 'Addons',
+					'dev': 'Addons Dev',
+					'stage': 'Addons Stage',
+					'marketplace': 'Marketplace',
+					'marketplace-dev': 'Marketplace Dev',
+					'marketplace-stage': 'Marketplace Stage',
+					}
     NAGIOS_STATUS_FILE = ''
     NAGIOS_STATUS_URL = ''
     NAGIOS_SERVICE_GROUPS = [('Web',
