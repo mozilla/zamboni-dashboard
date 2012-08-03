@@ -3,8 +3,8 @@ from ..lib.nagios import NagiosStatus
 
 
 def get_nagios_status():
-    f = open(app.config['NAGIOS_STATUS_FILE'])
-    return NagiosStatus(f)
+    with open(app.config['NAGIOS_STATUS_FILE']) as f:
+        return NagiosStatus(f)
 
 
 def get_nagios_service_status():
@@ -17,8 +17,12 @@ def get_nagios_service_status():
                                 'WARNING': [], 'CRITICAL': [], 'UNKNOWN': []}
             for h in hosts:
                 tmp = nstatus.services[h][s]
-                group_status[s][tmp.state].append(tmp)
-                group_status[s]['all'].append(tmp)
+                if tmp:
+                    group_status[s][tmp.state].append(tmp)
+                    group_status[s]['all'].append(tmp)
+                else:
+                    app.logger.warning('Service %s:%s defined, but does not exist.' % (h, s))
+
         status.append((group, group_status))
 
     return status, nstatus.updated
