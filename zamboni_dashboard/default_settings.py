@@ -46,7 +46,7 @@ class DefaultSettings(object):
                         for i in range(1, 31)],
                        ['zamboni monitor:8080', 'marketplace monitor:8081']),
                       ('Elasticsearch',
-                       ['elasticsearch%d.webapp.phx1.mozilla.com' % i
+                       ['elasticsearch%d.addons.phx1.mozilla.com' % i
                         for i in range(1, 4)],
                        ['color - Elasticsearch',
                         'procs - Elasticsearch']),
