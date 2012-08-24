@@ -2,6 +2,7 @@ class DefaultSettings(object):
     DASHBOARD_NAME = 'Zamboni Dashboard'
     OPS_BUG_URL = 'https://bit.ly/amo_ops_bug'
     OPS_DOCS_URL = 'https://mana.mozilla.org/wiki/display/websites/addons.mozilla.org'
+    LOAD_TEST_URL = 'http://client11.scl2.svc.mozilla.com:8080/'
     ENABLED_MODULES = ['ganglia', 'graphite', 'nagios', 'pingdom']
     GANGLIA_DEFAULT_REPORTS = ['load_report', 'cpu_report',
                        'mem_report', 'network_report']
