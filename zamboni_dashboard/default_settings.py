@@ -46,6 +46,10 @@ class DefaultSettings(object):
                        ['web%d.addons.phx1.mozilla.com' % i
                         for i in range(1, 31)],
                        ['zamboni monitor:8080', 'marketplace monitor:8081']),
+                       ('Web Versioncheck',
+                       ['web%d.versioncheck.addons.phx1.mozilla.com' % i
+                        for i in range(1, 11)],
+                       ['vamo-bg-www', 'vamo-www']),
                       ('Elasticsearch',
                        ['elasticsearch%d.addons.phx1.mozilla.com' % i
                         for i in range(1, 4)],
@@ -76,8 +80,7 @@ class DefaultSettings(object):
                        ['addons-versioncheck-single1.zlb.phx.mozilla.net',
                         'addons-versioncheck-single2.zlb.phx.mozilla.net',
                         'addons-versioncheck-single3.zlb.phx.mozilla.net'],
-                       ['vamo-www',
-                        'vamo zamboni monitor']),
+                       ['vamo-www']),
                       ('Virtual Server: versioncheck-bg.addons.mozilla.org',
                        ['addons-versioncheck-single1.zlb.phx.mozilla.net',
                         'addons-versioncheck-single2.zlb.phx.mozilla.net',
