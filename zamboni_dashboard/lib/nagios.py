@@ -28,7 +28,7 @@ class NagiosService(object):
         self._data = data
         self.host = data['host_name']
         self.description = data['service_description']
-        self.status = data['plugin_output']
+        self.status = data.get('plugin_output', '')
 
     @property
     def state(self):
