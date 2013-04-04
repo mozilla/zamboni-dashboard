@@ -27,9 +27,9 @@ class DefaultSettings(object):
 					'addons': 'addons',
 					'dev': 'addons-dev',
 					'stage': 'addons-stage',
-					'marketplace': 'addons-marketplace',
-					'marketplace-dev': 'addons-marketplacedev',
-					'marketplace-stage': 'addons-marketplacestage',
+					'marketplace': 'marketplace',
+					'marketplace-dev': 'marketplace-dev',
+					'marketplace-stage': 'marketplace-stage',
 					}
     GRAPHITE_DEFAULT_SITE = 'addons'
     GRAPHITE_SITE_NAMES = {
