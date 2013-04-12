@@ -39,6 +39,9 @@
                             <li><a href="{{ config.OPS_BUG_URL }}">File an operations bug</a></li>
                             <li><a href="{{ config.OPS_DOCS_URL }}">Operations documentation</a></li>
                             <li><a href="{{ config.LOAD_TEST_URL }}">Load tests</a></li>
+                            {% for external_url in config.EXTERNAL_URLS %}
+                            <li><a href="{{ external_url.href }}">{{ external_url.text }}</a></li>
+                            {% endfor %}
                         </ul>
                         </li>
                     </ul>

@@ -93,3 +93,5 @@ class DefaultSettings(object):
 
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 180
+
+    EXTERNAL_URLS = []
