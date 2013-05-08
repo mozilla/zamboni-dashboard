@@ -34,3 +34,14 @@ graphs = (
     ['Signing', ['target=stats.timers.{{ site }}.services.sign.upper_90',
                  '&target=stats.timers.{{ site }}.services.sign.count']],
 )
+
+_api_keys = ['apps', 'account', 'home', 'ratings', 'receipts', 'reviewers',
+    'search', 'services', 'webapps', 'versions']
+
+api = []
+for key in _api_keys:
+    target = []
+    for verb in ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']:
+        target.append('target=stats.timers.{{ site }}.api.%s.%s.upper_90' % (key, verb))
+
+    api.append([key, ['&'.join(target)]])

@@ -20,6 +20,7 @@ class DefaultSettings(object):
 						'dev': 'https://addons-dev.allizom.org',
 						'stage': 'https://addons.allizom.org',
 						'marketplace': 'https://marketplace.mozilla.org',
+						'marketplace-altdev': 'https://marketplace-altdev.allizom.org',
 						'marketplace-dev': 'https://marketplace-dev.allizom.org',
 						'marketplace-stage': 'https://marketplace.allizom.org',
 						}
@@ -28,6 +29,7 @@ class DefaultSettings(object):
 					'dev': 'addons-dev',
 					'stage': 'addons-stage',
 					'marketplace': 'marketplace',
+					'marketplace-altdev': 'marketplace-altdev',
 					'marketplace-dev': 'marketplace-dev',
 					'marketplace-stage': 'marketplace-stage',
 					}
@@ -37,6 +39,7 @@ class DefaultSettings(object):
 					'dev': 'Addons Dev',
 					'stage': 'Addons Stage',
 					'marketplace': 'Marketplace',
+					'marketplace-altdev': 'Marketplace Alt Dev',
 					'marketplace-dev': 'Marketplace Dev',
 					'marketplace-stage': 'Marketplace Stage',
 					}
