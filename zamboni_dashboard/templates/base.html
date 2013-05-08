@@ -25,7 +25,13 @@
                         <li><a href="{{ url_for('ganglia') }}">Ganglia</a></li>
                         {% endif %}
                         {% if 'graphite' in config.ENABLED_MODULES %}
-                        <li><a href="{{ url_for('graphite') }}">Graphite</a></li>
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Graphite<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{{ url_for('graphite') }}" }}">Basic</a></li>
+                          <li><a href="{{ url_for('graphite_api') }}">API</a></li>
+                        </ul>
+                        </li>
                         {% endif %}
                         {% if 'nagios' in config.ENABLED_MODULES %}
                         <li><a href="{{ url_for('nagios') }}">Nagios</a></li>

@@ -5,7 +5,8 @@ from flask import render_template, redirect, request
 from jinja2 import Template
 
 from . import app
-from .data.graphite import graphs as graphite_graphs
+from .data.graphite import (api as graphite_api_graphs,
+                            graphs as graphite_graphs)
 from .data.nagios import get_nagios_service_status
 from .data.pingdom import pingdom as pingdom_data
 from .data.ganglia import ganglia_graphs
@@ -41,12 +42,8 @@ def ganglia():
                             cur_range=cur_range)
 
 
-@app.route('/graphite')
-def graphite():
-    site = request.args.get('site', app.config['GRAPHITE_DEFAULT_SITE'])
-    graph = request.args.get('graph', 'all-responses')
-
-    data = {
+def get_graphite_data(site):
+    return {
         'base': '%s/render/?width=580&height=308' % app.config['GRAPHITE_BASE'],
         'site_url': app.config['GRAPHITE_SITE_URLS'][site],
         'site_urls': app.config['GRAPHITE_SITE_URLS'],
@@ -62,19 +59,45 @@ def graphite():
         'three_month': 'from=-90days&title=90 days',
         'ns': 'stats.%s' % app.config['GRAPHITE_SITES'][site]
     }
+
+def get_template_data(source, data, graph, site):
     graphs = {}
-    for name, gs in graphite_graphs:
+    for name, gs in source:
         slug = name.lower().replace(' ', '-')
         graphs[slug] = {
-                'name': name, 'slug': slug,
-                'url': [str(Template(g).render(data)) for g in gs],
-                'updates': data['updates'],
+            'name': name, 'slug': slug,
+            'url': [str(Template(g).render(data)) for g in gs],
+            'updates': data['updates'],
         }
 
     data['graphs'] = sorted([(v['slug'], v['name'], v['url']) for v in graphs.values()])
     data['graph'] = graphs[graph]
     data['defaults'] = {'site': site, 'graph': graph}
-    return render_template('graphite.html', **data)
+    return data
+
+
+@app.route('/graphite')
+def graphite():
+    site = request.args.get('site', app.config['GRAPHITE_DEFAULT_SITE'])
+    graph = request.args.get('graph', 'all-responses')
+    data = get_graphite_data(site)
+    template_data = get_template_data(graphite_graphs, data, graph, site)
+    return render_template('graphite.html', **template_data)
+
+
+@app.route('/graphite-api')
+def graphite_api():
+    site = request.args.get('site', 'marketplace')
+    graph = request.args.get('graph', 'apps')
+    data = get_graphite_data(site)
+    data['sites'] = {
+        'marketplace': 'marketplace',
+        'marketplace-altdev': 'marketplace-altdev',
+        'marketplace-dev': 'marketplace-dev',
+        'marketplace-stage': 'marketplace-stage',
+    }
+    template_data = get_template_data(graphite_api_graphs, data, graph, site)
+    return render_template('graphite.html', **template_data)
 
 
 @app.route('/nagios')
