@@ -88,7 +88,7 @@ def graphite():
 @app.route('/graphite-api')
 def graphite_api():
     site = request.args.get('site', 'marketplace')
-    graph = request.args.get('graph', 'apps')
+    graph = request.args.get('graph', 'apps.app')
     data = get_graphite_data(site)
     data['sites'] = {
         'marketplace': 'marketplace',

@@ -1,5 +1,5 @@
 from flask import Flask
-from flaskext.cache import Cache
+from flask.ext.cache import Cache
 
 from .settings_local import LocalSettings
 
