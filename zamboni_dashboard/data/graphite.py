@@ -35,8 +35,16 @@ graphs = (
                  '&target=stats.timers.{{ site }}.services.sign.count']],
 )
 
-_api_keys = ['apps', 'account', 'home', 'ratings', 'receipts', 'reviewers',
-    'search', 'services', 'webapps', 'versions']
+# List all the things.
+_api_keys = ['abuse.app',
+    'account.feedback', 'account.installed-mine', 'account.login',
+    'account.newsletter', 'account.permissions', 'account.settings',
+    'apps.app', 'apps.category', 'apps.preview', 'apps.privacy', 'apps.rating',
+    'apps.search', 'apps.status', 'apps.validation',
+    'payments.account', 'receipts.install',
+    'services.config', 'services.region',
+    'webpay.prepare', 'webpay.prices', 'webpay.product-icon', 'webpay.status'
+]
 
 api = []
 for key in _api_keys:
