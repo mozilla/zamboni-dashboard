@@ -39,9 +39,9 @@ graphs = (
 _api_keys = ['abuse.app',
     'account.feedback', 'account.installed-mine', 'account.login',
     'account.newsletter', 'account.permissions', 'account.settings',
-    'apps.app', 'apps.category', 'apps.featured', 'apps.preview',
-    'apps.privacy', 'apps.rating',
+    'apps.app', 'apps.category', 'apps.preview', 'apps.privacy', 'apps.rating',
     'apps.search', 'apps.status', 'apps.validation',
+    'fireplace.app', 'fireplace.featured', 'fireplace.privacy',
     'payments.account', 'receipts.install',
     'services.config', 'services.region',
     'webpay.prepare', 'webpay.prices', 'webpay.product-icon', 'webpay.status'
