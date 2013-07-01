@@ -8,6 +8,7 @@ import requests
 from zamboni_dashboard import app
 from zamboni_dashboard.data.pingdom import pingdom
 
+import gc
 
 manager = Manager(app)
 
@@ -30,9 +31,11 @@ def fetch_nagios_state():
         if r.status_code == 200:
             f = NamedTemporaryFile(delete=False)
             f.write(r.content)
+            r = None
             f.close()
             os.rename(f.name, app.config['NAGIOS_STATUS_FILE'])
 
+        gc.collect()
         time.sleep(15)
 
 
