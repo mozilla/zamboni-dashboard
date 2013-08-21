@@ -14,7 +14,7 @@ class DefaultSettings(object):
                     ('Memcache', 'https://ganglia.mozilla.org/phx1', 'Memcache AMO Cluster', ['memcached_report']),
                     ('Redis', 'https://ganglia.mozilla.org/phx1', 'amo-redis', ['amo_redis_prod_report'])
                     ]
-    GRAPHITE_BASE = 'https://graphite-phx.mozilla.org'
+    GRAPHITE_BASE = 'http://graphite.nag.mktmon.services.phx1.mozilla.com'
     GRAPHITE_SITE_URLS = {
 						'addons': 'https://addons.mozilla.org',
 						'dev': 'https://addons-dev.allizom.org',

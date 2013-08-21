@@ -2,13 +2,24 @@ from .. import app
 from ..lib.nagios import NagiosStatus
 
 
+class NotAvailable(Exception):
+    pass
+
+
 def get_nagios_status():
+    if app.config['NAGIOS_STATUS_FILE'] == '':
+        raise NotAvailable('App not configured to read Nagios files')
     with open(app.config['NAGIOS_STATUS_FILE']) as f:
         return NagiosStatus(f)
 
 
 def get_nagios_service_status():
-    nstatus = get_nagios_status()
+    try:
+        nstatus = get_nagios_status()
+    except NotAvailable, exc:
+        app.logger.warning(exc)
+        return [], False
+
     status = []
     for group, hosts, services in app.config['NAGIOS_SERVICE_GROUPS']:
         group_status = {}
