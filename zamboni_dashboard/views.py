@@ -6,6 +6,7 @@ from jinja2 import Template
 
 from . import app
 from .data.graphite import (api as graphite_api_graphs,
+                            payments as graphite_payments_graphs,
                             graphs as graphite_graphs)
 from .data.nagios import get_nagios_service_status
 from .data.pingdom import pingdom as pingdom_data
@@ -97,6 +98,23 @@ def graphite_api():
         'marketplace-stage': 'marketplace-stage',
     }
     template_data = get_template_data(graphite_api_graphs, data, graph, site)
+    return render_template('graphite.html', **template_data)
+
+
+@app.route('/graphite-payments')
+def graphite_payments():
+    site = request.args.get('site', 'marketplace')
+    graph = request.args.get('graph', 'all-webpay-requests')
+    data = get_graphite_data(site)
+    data['sites'] = {
+        'marketplace': 'marketplace',
+        # FIXME: {{ site }} isn't configured right for data.
+        #'marketplace-altdev': 'marketplace-altdev',
+        #'marketplace-dev': 'marketplace-dev',
+        #'marketplace-stage': 'marketplace-stage',
+    }
+    template_data = get_template_data(graphite_payments_graphs,
+                                      data, graph, site)
     return render_template('graphite.html', **template_data)
 
 

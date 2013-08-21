@@ -58,3 +58,61 @@ for key in _api_keys:
         target.append('target=stats.timers.{{ site }}.api.%s.%s.upper_90' % (key, verb))
 
     api.append([key, ['&'.join(target)]])
+
+
+# TODO(Kumar) add {{ site }} to these URLs but I think we to collect data
+# differently.
+payments = [
+    ['All Webpay Requests', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.view.GET.mean'
+        '&target=stats.timers.webpay.view.GET.mean_90'
+        '&target=stats.timers.webpay.view.POST.mean'
+        '&target=stats.timers.webpay.view.POST.mean_90'
+        ]],
+
+    # Is this from Solitude? I don't even know. I think statsd keys are
+    # messed up.
+    ['Bango Billing', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.bango.billing.GET.mean'
+        '&target=stats.timers.webpay.bango.billing.GET.mean_90'
+        '&target=stats.timers.webpay.bango.billing.POST.upper'
+        '&target=stats.timers.webpay.bango.billing.POST.upper'
+        ]],
+    ['Bango Event', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.bango.event.GET.mean'
+        '&target=stats.timers.webpay.bango.event.GET.mean_90'
+        '&target=stats.timers.webpay.bango.event.POST.upper'
+        '&target=stats.timers.webpay.bango.event.POST.upper'
+        ]],
+    ['Bango Notification', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.bango.notification.GET.mean'
+        '&target=stats.timers.webpay.bango.notification.GET.mean_90'
+        '&target=stats.timers.webpay.bango.notification.POST.upper'
+        '&target=stats.timers.webpay.bango.notification.POST.upper'
+        ]],
+    ['Bango Premium', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.bango.premium.GET.mean'
+        '&target=stats.timers.webpay.bango.premium.GET.mean_90'
+        '&target=stats.timers.webpay.bango.premium.POST.upper'
+        '&target=stats.timers.webpay.bango.premium.POST.upper'
+        ]],
+    ['Bango Product', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.bango.product.GET.mean'
+        '&target=stats.timers.webpay.bango.product.GET.mean_90'
+        '&target=stats.timers.webpay.bango.product.POST.upper'
+        '&target=stats.timers.webpay.bango.product.POST.upper'
+        ]],
+    ['Bango Rating', [
+        'vtitle=milleseconds'
+        '&target=stats.timers.webpay.bango.rating.GET.mean'
+        '&target=stats.timers.webpay.bango.rating.GET.mean_90'
+        '&target=stats.timers.webpay.bango.rating.POST.upper'
+        '&target=stats.timers.webpay.bango.rating.POST.upper'
+        ]],
+]
