@@ -61,6 +61,7 @@ def get_graphite_data(site):
         'ns': 'stats.%s' % app.config['GRAPHITE_SITES'][site]
     }
 
+
 def get_template_data(source, data, graph, site):
     graphs = {}
     for name, gs in source:
@@ -98,6 +99,10 @@ def graphite_api():
         'marketplace-stage': 'marketplace-stage',
     }
     template_data = get_template_data(graphite_api_graphs, data, graph, site)
+    # This only goes halfway across, we need a graphite update
+    # for more. https://bugs.launchpad.net/graphite/+bug/1013308
+    template_data['thresholds'] = ('&target=threshold(500, "poor", orange)'
+                                   '&target=threshold(1000, "bad", red)')
     return render_template('graphite.html', **template_data)
 
 
