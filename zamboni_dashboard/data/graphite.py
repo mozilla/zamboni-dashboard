@@ -40,22 +40,71 @@ graphs = (
 )
 
 # List all the things.
-_api_keys = ['abuse.app',
-    'account.feedback', 'account.installed-mine', 'account.login',
-    'account.newsletter', 'account.permissions', 'account.settings',
-    'apps.app', 'apps.category', 'apps.preview', 'apps.privacy', 'apps.rating',
-    'apps.search', 'apps.status', 'apps.validation',
-    'fireplace.app', 'fireplace.featured', 'fireplace.privacy',
-    'payments.account', 'receipts.install',
-    'services.config', 'services.region',
-    'webpay.prepare', 'webpay.prices', 'webpay.product-icon', 'webpay.status'
+_api_keys = [
+    'abuse.api.AppAbuseViewSet',
+    'abuse.api.UserAbuseViewSet',
+    'account.views.AccountView',
+    'account.views.FeedbackView',
+    'account.views.InstalledView',
+    'account.views.LoginView',
+    'account.views.NewsletterView',
+    'account.views.PermissionsView',
+    'api.resources.CarrierViewSet',
+    'api.resources.CategoryViewSet',
+    'api.resources.ErrorViewSet',
+    'api.resources.PriceCurrencyViewSet',
+    'api.resources.PriceTierViewSet',
+    'api.resources.RefreshManifestViewSet',
+    'api.resources.RegionViewSet',
+    'collections.views.CollectionImageViewSet',
+    'collections.views.CollectionViewSet',
+    'comm.api.CommViewSet',
+    'comm.api.NoteViewSet',
+    'comm.api.ReplyViewSet',
+    'comm.api.ThreadViewSet',
+    'developers.api.ContentRatingList',
+    'developers.api.ContentRatingsPingback',
+    'developers.api_payments.AddonPaymentAccountViewSet',
+    'developers.api_payments.PaymentAccountViewSet',
+    'developers.api_payments.PaymentAppViewSet',
+    'developers.api_payments.PaymentCheckViewSet',
+    'developers.api_payments.PaymentDebugViewSet',
+    'developers.api_payments.PaymentViewSet',
+    'developers.api_payments.UpsellViewSet',
+    'features.views.AppFeaturesList',
+    'fireplace.api.AppViewSet',
+    'monolith.resources.MonolithViewSet',
+    'ratings.views.RatingFlagViewSet',
+    'ratings.views.RatingViewSet',
+    'reviewers.api.ApproveRegion',
+    'reviewers.api.ReviewersSearchView',
+    'reviewers.api.ReviewingView',
+    'search.api.FeaturedSearchView',
+    'search.api.SearchView',
+    'search.api.SuggestionsView',
+    'stats.api.AppStats',
+    'stats.api.AppStatsTotal',
+    'stats.api.GlobalStats',
+    'stats.api.GlobalStatsTotal',
+    'stats.api.TransactionAPI',
+    'submit.api.PreviewViewSet',
+    'submit.api.StatusViewSet',
+    'submit.api.ValidationViewSet',
+    'versions.api.VersionViewSet',
+    'webapps.api.AppViewSet',
+    'webapps.api.PrivacyPolicyViewSet',
+    'webpay.resources.FailureNotificationView',
+    'webpay.resources.PreparePayView',
+    'webpay.resources.PricesViewSet',
+    'webpay.resources.ProductIconViewSet',
+    'webpay.resources.StatusPayView',
 ]
 
 api = []
 for key in _api_keys:
     target = ['vtitle=count']
     for verb in ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']:
-        target.append('target=stats.timers.{{ site }}.api.%s.%s.upper_90' % (key, verb))
+        target.append('target=stats.timers.{{ site }}.api.mkt.%s.%s.upper_90' % (key, verb))
 
     api.append([key, ['&'.join(target)]])
 
