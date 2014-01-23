@@ -66,14 +66,17 @@ def get_template_data(source, data, graph, site):
     graphs = {}
     for name, gs in source:
         slug = name.lower().replace(' ', '-')
+        partition = name.rpartition('.')
         graphs[slug] = {
-            'name': name, 'slug': slug,
+            'name': name,
+            'prefix': partition[0],
+            'suffix': partition[2],
+            'slug': slug,
             'url': [str(Template(g).render(data)) for g in gs],
             'updates': data['updates'],
         }
-
-    data['graphs'] = sorted([(v['slug'], v['name'], v['url']) for v in graphs.values()])
-    data['graph'] = graphs[graph]
+    data['graphs'] = graphs # sorted([(v['slug'], v['name'], v['url']) for v in graphs.values()])
+    data['current_graph'] = graphs[graph]
     data['defaults'] = {'site': site, 'graph': graph}
     return data
 

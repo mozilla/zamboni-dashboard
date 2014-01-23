@@ -7,16 +7,21 @@
     {% endfor %}
   </p>
   <hr/>
-  <p>
-    {% for slug, name, graph in graphs %}
-      <a href="?site={{ defaults.site }}&amp;graph={{ slug }}">{{ name }}</a> {% if not loop.last %}|{% endif %}
-    {% endfor %}
-  </p>
-    <h2><a id="{{ graph.slug }}">{{ graph.name }}</a></h2>
-    <img class="fifteen" src="{{ base }}&amp;{{ graph.url[0] }}{{ graph.updates }}&amp;{{ fifteen }}&amp;{{ thresholds }}">
-    <img class="hour" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ hour }}&amp;{{ thresholds }}">
-    <img class="day" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ day }}&amp;{{ thresholds }}">
-    <img class="week" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ week }}&amp;{{ thresholds }}">
-    <img class="month" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ month }}&amp;{{ thresholds }}">
-    <img class="3month" src="{{ base }}&amp;{{ graph.url[0]  }}{{ graph.updates }}&amp;{{ three_month }}&amp;{{ thresholds }}">
+  <ul class="graphs-selector">
+  {% for group in graphs.values()|groupby('prefix') %}
+      <li>{{ group.grouper }}{% if group.grouper %}: {% endif %}<ul>
+      {% for graph in group.list %}
+          <li><a href="?site={{ defaults.site }}&amp;graph={{ graph.slug }}">{{ graph.suffix }}</a> {% if not loop.last %}|{% endif %}</li>
+      {% endfor %}</ul></li>
+  {% endfor %}
+  </ul>
+  <h2><a id="{{ current_graph.slug }}">{{ current_graph.name }}</a></h2>
+  <div class="graphs-container">
+    <img class="fifteen" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ fifteen }}&amp;{{ thresholds }}">
+    <img class="hour" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ hour }}&amp;{{ thresholds }}">
+    <img class="day" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ day }}&amp;{{ thresholds }}">
+    <img class="week" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ week }}&amp;{{ thresholds }}">
+    <img class="month" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ month }}&amp;{{ thresholds }}">
+    <img class="3month" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ three_month }}&amp;{{ thresholds }}">
+  </div>
 {% endblock %}
