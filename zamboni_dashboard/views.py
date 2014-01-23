@@ -66,14 +66,17 @@ def get_template_data(source, data, graph, site):
     graphs = {}
     for name, gs in source:
         slug = name.lower().replace(' ', '-')
+        partition = name.rpartition('.')
         graphs[slug] = {
-            'name': name, 'slug': slug,
+            'name': name,
+            'prefix': partition[0],
+            'suffix': partition[2],
+            'slug': slug,
             'url': [str(Template(g).render(data)) for g in gs],
             'updates': data['updates'],
         }
-
-    data['graphs'] = sorted([(v['slug'], v['name'], v['url']) for v in graphs.values()])
-    data['graph'] = graphs[graph]
+    data['graphs'] = graphs # sorted([(v['slug'], v['name'], v['url']) for v in graphs.values()])
+    data['current_graph'] = graphs[graph]
     data['defaults'] = {'site': site, 'graph': graph}
     return data
 
@@ -101,8 +104,12 @@ def graphite_api():
     template_data = get_template_data(graphite_api_graphs, data, graph, site)
     # This only goes halfway across, we need a graphite update
     # for more. https://bugs.launchpad.net/graphite/+bug/1013308
-    template_data['thresholds'] = ('&target=threshold(500, "poor", orange)'
-                                   '&target=threshold(1000, "bad", red)')
+    targets = (
+        'threshold(500, "poor", orange)',
+        'threshold(1000, "bad", red)',
+        'drawAsInfinite(color(stats.timers.addons.update.count, "magenta"))'
+    )
+    template_data['thresholds'] = '&'.join('target=%s' % t for t in targets)
     return render_template('graphite.html', **template_data)
 
 

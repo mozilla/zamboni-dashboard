@@ -1,0 +1,13 @@
+.graphs-container {
+    background-color: black;
+}
+
+.graphs-selector {
+    list-style-type: none;
+    margin: 0;
+}
+
+.graphs-selector ul, .graphs-selector ul li {
+    display: inline;
+    margin: 0;
+}
