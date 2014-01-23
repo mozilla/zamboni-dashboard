@@ -101,8 +101,12 @@ def graphite_api():
     template_data = get_template_data(graphite_api_graphs, data, graph, site)
     # This only goes halfway across, we need a graphite update
     # for more. https://bugs.launchpad.net/graphite/+bug/1013308
-    template_data['thresholds'] = ('&target=threshold(500, "poor", orange)'
-                                   '&target=threshold(1000, "bad", red)')
+    targets = (
+        'threshold(500, "poor", orange)',
+        'threshold(1000, "bad", red)',
+        'drawAsInfinite(color(stats.timers.addons.update.count, "magenta"))'
+    )
+    template_data['thresholds'] = '&'.join('target=%s' % t for t in targets)
     return render_template('graphite.html', **template_data)
 
 
