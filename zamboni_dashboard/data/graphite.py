@@ -73,6 +73,7 @@ _api_keys = [
     'developers.api_payments.UpsellViewSet',
     'features.views.AppFeaturesList',
     'fireplace.api.AppViewSet',
+    'fireplace.api.FeaturedSearchView',
     'monolith.resources.MonolithViewSet',
     'ratings.views.RatingFlagViewSet',
     'ratings.views.RatingViewSet',
