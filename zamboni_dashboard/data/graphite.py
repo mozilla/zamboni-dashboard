@@ -74,6 +74,7 @@ _api_keys = [
     'features.views.AppFeaturesList',
     'fireplace.api.AppViewSet',
     'fireplace.api.FeaturedSearchView',
+    'fireplace.api.SearchView',
     'monolith.resources.MonolithViewSet',
     'ratings.views.RatingFlagViewSet',
     'ratings.views.RatingViewSet',
