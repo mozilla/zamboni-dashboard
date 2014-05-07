@@ -6,12 +6,14 @@ from jinja2 import Template
 
 from . import app
 from .data.graphite import (api as graphite_api_graphs,
-                            payments as graphite_payments_graphs,
+                            webpay as graphite_webpay_graphs,
+                            solitude as graphite_solitude_graphs,
+                            solitude_proxy as graphite_solitude_proxy_graphs,
                             graphs as graphite_graphs)
 from .data.nagios import get_nagios_service_status
 from .data.pingdom import pingdom as pingdom_data
 from .data.ganglia import ganglia_graphs
-
+from default_settings import GRAPHITE_REST
 
 
 @app.route('/')
@@ -45,20 +47,18 @@ def ganglia():
 
 def get_graphite_data(site):
     return {
-        'base': '%s/render/?width=580&height=308' % app.config['GRAPHITE_BASE'],
-        'site_url': app.config['GRAPHITE_SITE_URLS'][site],
-        'site_urls': app.config['GRAPHITE_SITE_URLS'],
-        'site_name': app.config['GRAPHITE_SITE_NAMES'][site],
-        'site': app.config['GRAPHITE_SITES'][site],
-        'updates': '&target=drawAsInfinite(stats.timers.%s.update.count)' % app.config['GRAPHITE_SITES'][site],
-        'sites': app.config['GRAPHITE_SITES'],
+        'base': app.config['GRAPHITE_BASE'].get(site, GRAPHITE_REST) + '/render/?width=580&height=308',
+        'site_name': app.config['GRAPHITE_SITE_NAMES'].get(site, site).replace('-', ' ').capitalize(),
+        'site': app.config['GRAPHITE_SITES'].get(site, site),
+        'updates': '&target=drawAsInfinite(stats.timers.%s.update.count)' % app.config['GRAPHITE_SITES'].get(site, site),
+        'sites': sorted(app.config['GRAPHITE_SITES']),
         'fifteen': 'from=-15minutes&title=15 minutes',
         'hour': 'from=-1hours&title=1 hour',
         'day': 'from=-24hours&title=24 hours',
         'week': 'from=-7days&title=7 days',
         'month': 'from=-30days&title=30 days',
         'three_month': 'from=-90days&title=90 days',
-        'ns': 'stats.%s' % app.config['GRAPHITE_SITES'][site]
+        'ns': 'stats.%s' % app.config['GRAPHITE_SITES'].get(site, site)
     }
 
 
@@ -86,6 +86,15 @@ def graphite():
     site = request.args.get('site', app.config['GRAPHITE_DEFAULT_SITE'])
     graph = request.args.get('graph', 'all-responses')
     data = get_graphite_data(site)
+    data['sites'] = {
+        'dev': 'dev',
+        'stage': 'stage',
+        'addons': 'addons',
+        'marketplace': 'marketplace',
+        'marketplace-altdev': 'marketplace-altdev',
+        'marketplace-dev': 'marketplace-dev',
+        'marketplace-stage': 'marketplace-stage',
+    }
     template_data = get_template_data(graphite_graphs, data, graph, site)
     return render_template('graphite.html', **template_data)
 
@@ -113,20 +122,34 @@ def graphite_api():
     return render_template('graphite.html', **template_data)
 
 
-@app.route('/graphite-payments')
-def graphite_payments():
-    site = request.args.get('site', 'marketplace')
-    graph = request.args.get('graph', 'all-webpay-requests')
-    data = get_graphite_data(site)
-    data['sites'] = {
-        'marketplace': 'marketplace',
-        # FIXME: {{ site }} isn't configured right for data.
-        #'marketplace-altdev': 'marketplace-altdev',
-        #'marketplace-dev': 'marketplace-dev',
-        #'marketplace-stage': 'marketplace-stage',
+@app.route('/graphite/<server>/')
+def graphite_server(server):
+    servers = {
+        'webpay': {
+            'site': 'webpay',
+            'sites': ['webpay', 'webpay-dev', 'webpay-stage',
+                      'webpay-paymentsalt'],
+            'graphs': graphite_webpay_graphs
+        },
+        'solitude': {
+            'site': 'solitude',
+            'sites': ['solitude', 'solitude-dev', 'solitude-stage',
+                      'solitude-payments-alt'],
+            'graphs': graphite_solitude_graphs
+        },
+        'proxy': {
+            'site': 'solitude',
+            'sites': ['solitude-proxy', 'solitude-proxy-dev',
+                      'solitude-proxy-stage', 'solitude-proxy-payments-alt'],
+            'graphs': graphite_solitude_proxy_graphs
+        }
     }
-    template_data = get_template_data(graphite_payments_graphs,
-                                      data, graph, site)
+    server = servers[server]
+    site = request.args.get('site', server['site'])
+    graph = request.args.get('graph', 'all-requests')
+    data = get_graphite_data(site)
+    data['sites'] = dict((s, s) for s in server['sites'])
+    template_data = get_template_data(server['graphs'], data, graph, site)
     return render_template('graphite.html', **template_data)
 
 

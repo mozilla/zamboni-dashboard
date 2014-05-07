@@ -30,7 +30,9 @@
                         <ul class="dropdown-menu">
                           <li><a href="{{ url_for('graphite') }}" }}">Basic</a></li>
                           <li><a href="{{ url_for('graphite_api') }}">API</a></li>
-                          <li><a href="{{ url_for('graphite_payments') }}">Payments</a></li>
+                          <li><a href="{{ url_for('graphite_server', server='webpay') }}">Payments: Webpay</a></li>
+                          <li><a href="{{ url_for('graphite_server', server='solitude') }}">Payments: Solitude</a></li>
+                          <li><a href="{{ url_for('graphite_server', server='proxy') }}">Payments: Solitude Proxy</a></li>
                         </ul>
                         </li>
                         {% endif %}
