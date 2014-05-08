@@ -1,3 +1,6 @@
+GRAPHITE_PROD = 'http://graphite.nag.mktmon.services.phx1.mozilla.com'
+GRAPHITE_REST = 'https://graphite-phx1.mozilla.org'
+
 class DefaultSettings(object):
     DASHBOARD_NAME = 'Zamboni Dashboard'
     OPS_BUG_URL = 'https://bit.ly/amo_ops_bug'
@@ -14,35 +17,38 @@ class DefaultSettings(object):
                     ('Memcache', 'https://ganglia.mozilla.org/phx1', 'Memcache AMO Cluster', ['memcached_report']),
                     ('Redis', 'https://ganglia.mozilla.org/phx1', 'amo-redis', ['amo_redis_prod_report'])
                     ]
-    GRAPHITE_BASE = 'http://graphite.nag.mktmon.services.phx1.mozilla.com'
-    GRAPHITE_SITE_URLS = {
-						'addons': 'https://addons.mozilla.org',
-						'dev': 'https://addons-dev.allizom.org',
-						'stage': 'https://addons.allizom.org',
-						'marketplace': 'https://marketplace.mozilla.org',
-						'marketplace-altdev': 'https://marketplace-altdev.allizom.org',
-						'marketplace-dev': 'https://marketplace-dev.allizom.org',
-						'marketplace-stage': 'https://marketplace.allizom.org',
-						}
+    GRAPHITE_BASE = {
+        'addons': GRAPHITE_PROD,
+        'marketplace': GRAPHITE_PROD,
+        'webpay': GRAPHITE_PROD,
+        'solitude': GRAPHITE_PROD,
+        'solitude-proxy': GRAPHITE_PROD
+    }
+    # The mapping of site name to prefix in graphite, this is just to change
+    # from hopefully clear names, to the graphite prefixes.
     GRAPHITE_SITES = {
-					'addons': 'addons',
-					'dev': 'addons-dev',
-					'stage': 'addons-stage',
-					'marketplace': 'marketplace',
-					'marketplace-altdev': 'marketplace-altdev',
-					'marketplace-dev': 'marketplace-dev',
-					'marketplace-stage': 'marketplace-stage',
-					}
+		'dev': 'addons-dev',
+		'stage': 'addons-stage',
+        # Webpay.
+        'webpay-payments-alt': 'webpay-paymentsalt',
+        # Solitude servers.
+        'solitude': 'payments_prod',
+        'solitude-stage': 'payments_stage',
+        'solitude-dev': 'payments-dev',
+        'solitude-payments-alt': 'payments_bango_stage',
+        # Solitude proxy servers.
+        'solitude-proxy': 'payments_proxy_prod',
+        'solitude-proxy-dev': 'payments-proxy-dev',
+        'solitude-proxy-stage': 'payments_proxy_stage',
+        'solitude-proxy-payments-alt': 'payments_proxy_bango_stage',
+	}
     GRAPHITE_DEFAULT_SITE = 'addons'
     GRAPHITE_SITE_NAMES = {
-					'addons': 'Addons',
-					'dev': 'Addons Dev',
-					'stage': 'Addons Stage',
-					'marketplace': 'Marketplace',
-					'marketplace-altdev': 'Marketplace Alt Dev',
-					'marketplace-dev': 'Marketplace Dev',
-					'marketplace-stage': 'Marketplace Stage',
-					}
+		'dev': 'Addons Dev',
+		'stage': 'Addons Stage',
+		'marketplace-altdev': 'Marketplace Alt Dev',
+        'webpay': 'WebPay'
+	}
     NAGIOS_STATUS_FILE = ''
     NAGIOS_STATUS_URL = ''
     NAGIOS_SERVICE_GROUPS = [('Web',

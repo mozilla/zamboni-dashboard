@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Graphite for {{ site }}</h1>
+  <h2>Graphite for {{ site_name }}: {{ current_graph.name }}</h2>
   <p>
-    {% for site in sites %}
+    <b>Servers: </b>
+    {% for site in sites|sort %}
     <a href="?site={{ site }}&amp;graph={{ defaults.graph }}">{{ site }}</a> {% if not loop.last %}|{% endif %}
     {% endfor %}
   </p>
-  <hr/>
   <ul class="graphs-selector">
   {% for group in graphs.values()|groupby('prefix') %}
       <li>{{ group.grouper }}{% if group.grouper %}: {% endif %}<ul>
-      {% for graph in group.list %}
+      {% for graph in group.list|sort %}
           <li><a href="?site={{ defaults.site }}&amp;graph={{ graph.slug }}">{{ graph.suffix }}</a> {% if not loop.last %}|{% endif %}</li>
       {% endfor %}</ul></li>
   {% endfor %}
   </ul>
-  <h2><a id="{{ current_graph.slug }}">{{ current_graph.name }}</a></h2>
+  <hr>
   <div class="graphs-container">
     <img class="fifteen" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ fifteen }}&amp;{{ thresholds }}">
     <img class="hour" src="{{ base }}&amp;{{ current_graph.url[0] }}{{ current_graph.updates }}&amp;{{ hour }}&amp;{{ thresholds }}">

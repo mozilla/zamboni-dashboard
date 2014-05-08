@@ -111,59 +111,52 @@ for key in _api_keys:
     api.append([key, ['&'.join(target)]])
 
 
-# TODO(Kumar) add {{ site }} to these URLs but I think we to collect data
-# differently.
-payments = [
-    ['All Webpay Requests', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.view.GET.mean'
-        '&target=stats.timers.webpay.view.GET.mean_90'
-        '&target=stats.timers.webpay.view.POST.mean'
-        '&target=stats.timers.webpay.view.POST.mean_90'
-        ]],
+def _map(string, *args):
+    data = []
+    for x in args:
+        data.append('target={0}.{1}'.format(string, x))
+    return '&'.join(data)
 
-    # Is this from Solitude? I don't even know. I think statsd keys are
-    # messed up.
-    ['Bango Billing', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.bango.billing.GET.mean'
-        '&target=stats.timers.webpay.bango.billing.GET.mean_90'
-        '&target=stats.timers.webpay.bango.billing.POST.upper'
-        '&target=stats.timers.webpay.bango.billing.POST.upper'
-        ]],
-    ['Bango Event', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.bango.event.GET.mean'
-        '&target=stats.timers.webpay.bango.event.GET.mean_90'
-        '&target=stats.timers.webpay.bango.event.POST.upper'
-        '&target=stats.timers.webpay.bango.event.POST.upper'
-        ]],
-    ['Bango Notification', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.bango.notification.GET.mean'
-        '&target=stats.timers.webpay.bango.notification.GET.mean_90'
-        '&target=stats.timers.webpay.bango.notification.POST.upper'
-        '&target=stats.timers.webpay.bango.notification.POST.upper'
-        ]],
-    ['Bango Premium', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.bango.premium.GET.mean'
-        '&target=stats.timers.webpay.bango.premium.GET.mean_90'
-        '&target=stats.timers.webpay.bango.premium.POST.upper'
-        '&target=stats.timers.webpay.bango.premium.POST.upper'
-        ]],
-    ['Bango Product', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.bango.product.GET.mean'
-        '&target=stats.timers.webpay.bango.product.GET.mean_90'
-        '&target=stats.timers.webpay.bango.product.POST.upper'
-        '&target=stats.timers.webpay.bango.product.POST.upper'
-        ]],
-    ['Bango Rating', [
-        'vtitle=milleseconds'
-        '&target=stats.timers.webpay.bango.rating.GET.mean'
-        '&target=stats.timers.webpay.bango.rating.GET.mean_90'
-        '&target=stats.timers.webpay.bango.rating.POST.upper'
-        '&target=stats.timers.webpay.bango.rating.POST.upper'
-        ]],
+
+webpay = [
+    ['All Requests', [
+        _map('stats.{{ site }}.response',
+             '200', '301', '304', '400', '401', '404', '500'),
+    ]],
+    ['Timing', [
+        _map('stats.timers.{{ site }}.view',
+             'GET.mean', 'GET.mean_90', 'POST.mean', 'POST.mean_90')
+    ]]
+]
+
+
+solitude = [
+    ['All Requests', [
+        _map('stats.{{ site }}.response',
+             '200', '301', '304', '400', '401', '404', '500'),
+    ]],
+    ['Bango', [
+        _map('stats.timers.{{ site }}.solitude.bango.request.*',
+             'mean')
+    ]],
+    ['Boko', [
+        _map('stats.timers.{{ site }}.solitude.boku.api',
+             'count', 'mean', 'mean_90')
+    ]]
+]
+
+
+solitude_proxy = [
+   ['All Requests', [
+        _map('stats.{{ site }}.response',
+             '200', '301', '304', '400', '401', '404', '500'),
+    ]],
+    ['Bango', [
+        _map('stats.timers.{{ site }}.solitude.proxy.bango.bango',
+             'count', 'mean', 'mean_90')
+    ]],
+    ['Boku', [
+        _map('stats.timers.{{ site }}.solitude.proxy.boku',
+             'count', 'mean', 'mean_90')
+    ]]
 ]
