@@ -10,7 +10,15 @@ graphs = (
     ['Verify', ['vtitle=count&target=stats.timers.{{ site }}.services.verify.lower&target=stats.timers.{{ site }}.services.verify.mean&target=stats.timers.{{ site }}.services.verify.upper_90&target=scale(stats.timers.{{ site }}.services.verify.count(0.01)']],
     ['Homepage', ['vtitle=count&target=stats.timers.{{ site }}.view.addons.views.home.GET.lower&target=stats.timers.{{ site }}.view.addons.views.home.GET.mean&target=stats.timers.{{ site }}.view.addons.views.home.GET.upper_90&target=scale(stats.timers.{{ site }}.view.addons.views.home.GET.count,0.1)']],
     ['Search', ['vtitle=count&target=stats.timers.{{ site }}.view.search.views.search.GET.lower&target=stats.timers.{{ site }}.search.raw.lower&target=stats.timers.{{ site }}.view.search.views.search.GET.mean&target=stats.timers.{{ site }}.search.raw.mean&target=stats.timers.{{ site }}.view.search.views.search.GET.upper_90&target=stats.timers.{{ site }}.search.raw.upper_90&target=scale(stats.timers.{{ site }}.view.search.views.search.GET.count,0.1)&target=scale(stats.timers.{{ site }}.search.raw.count,0.1)']],
-    ['ES Request', ['vtitle=milleseconds&target=stats.timers.{{ site }}.search.es.took.lower&target=stats.timers.{{ site }}.search.took.lower&target=stats.timers.{{ site }}.search.es.took.mean&target=stats.timers.{{ site }}.search.took.mean&target=stats.timers.{{ site }}.search.es.took.upper_90&target=stats.timers.{{ site }}.search.took.upper_90&target=scale(stats.timers.{{ site }}.search.es.took.count,0.1)&target=scale(stats.timers.{{ site }}.search.took.count,0.1)']],
+    ['ES Request', ['vtitle=milleseconds'
+                    '&target=stats.timers.{{ site }}.search.execute.lower'
+                    '&target=stats.timers.{{ site }}.search.took.lower'
+                    '&target=stats.timers.{{ site }}.search.execute.mean'
+                    '&target=stats.timers.{{ site }}.search.took.mean'
+                    '&target=stats.timers.{{ site }}.search.execute.upper_90'
+                    '&target=stats.timers.{{ site }}.search.took.upper_90'
+                    '&target=scale(stats.timers.{{ site }}.search.execute.count,0.1)'
+                    '&target=scale(stats.timers.{{ site }}.search.took.count,0.1)']],
     ['Authenticated Responses', ['vtitle=milleseconds&target=stats.{{ site }}.response.auth.200&target=scale(stats.{{ site }}.response.200%2C0.1)&from=-1hours']],
     ['Marketplace', ['vtitle=count&target=stats.timers.{{ site }}.paypal.paykey.retrieval.upper_90']],
     ['Client', ['vtitle=unknown'
